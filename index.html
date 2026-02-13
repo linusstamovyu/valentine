@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Valentine?</title>
+  <style>
+    :root {
+      --bg1: #ffdde1;
+      --bg2: #fd0022;
+      --card: rgba(255,255,255,0.85);
+      --text: #1f1f1f;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: radial-gradient(circle at 20% 20%, var(--bg1), transparent 60%),
+                  radial-gradient(circle at 80% 30%, #ffd1dc, transparent 55%),
+                  linear-gradient(135deg, var(--bg1), var(--bg2));
+      overflow: hidden;
+    }
+
+    .hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.35;
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(255,255,255,.65) 0 2px, transparent 3px),
+        radial-gradient(circle at 60% 10%, rgba(255,255,255,.55) 0 2px, transparent 3px),
+        radial-gradient(circle at 90% 40%, rgba(255,255,255,.5) 0 2px, transparent 3px),
+        radial-gradient(circle at 30% 70%, rgba(255,255,255,.45) 0 2px, transparent 3px),
+        radial-gradient(circle at 70% 80%, rgba(255,255,255,.5) 0 2px, transparent 3px);
+      animation: floaty 8s ease-in-out infinite;
+    }
+    @keyframes floaty {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .card {
+      width: min(92vw, 520px);
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.6);
+      border-radius: 24px;
+      padding: 28px 22px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+      text-align: center;
+      position: relative;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      letter-spacing: -0.02em;
+    }
+    p {
+      margin: 0 0 22px;
+      font-size: 16px;
+      opacity: 0.9;
+      line-height: 1.4;
+    }
+/* Image */
+    .photo {
+      width: 100%;
+      max-width: 380px;
+      height: auto;
+      border-radius: 18px;
+      margin: 6px auto 16px;
+      display: block;
+      box-shadow: 0 16px 30px rgba(0,0,0,0.15);
+    }
+    .caption {
+      margin: -8px 0 14px;
+      font-size: 13px;
+      opacity: 0.75;
+    }
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      height: 64px; /* keeps layout stable even when "No" moves */
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-size: 16px;
+      font-weight: 650;
+      cursor: pointer;
+      transition: transform .08s ease, filter .15s ease;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    #yesBtn {
+      background: #ff3b6a;
+      color: white;
+      box-shadow: 0 12px 22px rgba(255, 59, 106, 0.25);
+    }
+    #yesBtn:hover { filter: brightness(1.02); transform: translateY(-1px); }
+
+    /* The "No" button will be positioned absolutely (so it can run away) */
+    #noBtn {
+      background: white;
+      color: #ff3b6a;
+      border: 2px solid rgba(255, 59, 106, 0.45);
+      position: absolute;
+      left: 50%;
+      transform: translateX(80px);
+      box-shadow: 0 10px 18px rgba(0,0,0,0.08);
+    }
+
+    .footer {
+      margin-top: 18px;
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    /* Success modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      place-items: center;
+      background: rgba(0,0,0,0.25);
+      padding: 18px;
+    }
+    .modal.show { display: grid; }
+
+    .modal-card {
+      width: min(92vw, 520px);
+      background: rgba(255,255,255,0.92);
+      border-radius: 24px;
+      padding: 22px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+    }
+    .big {
+      font-size: 34px;
+      margin: 0 0 10px;
+    }
+    .sub {
+      margin: 0 0 16px;
+      font-size: 16px;
+      line-height: 1.45;
+    }
+    .small-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .ghost {
+      background: transparent;
+      border: 1px solid rgba(0,0,0,0.15);
+      color: rgba(0,0,0,0.75);
+    }
+    .ghost:hover { transform: translateY(-1px); }
+  </style>
+</head>
+
+<body>
+  <div class="hearts"></div>
+
+  <main class="card" role="main">
+    <!-- ✅ Customize these two lines -->
+    <img src="images/us.jpg" alt="Us" class="photo">
+    <div class="caption">a lil us moment 🥺💖</div>
+
+    <h1>Hey <span id="name">CAROLINA DE MOURA SENA</span> 💖</h1>
+    <p id="question">Will you be my Valentine amor?</p>
+
+    <div class="btn-row" id="btnRow">
+      <button id="yesBtn">Yes daddy💘</button>
+      <button id="noBtn" aria-label="No (good luck clicking)">No 😅</button>
+    </div>
+
+    <div class="footer">Tip: try clicking “No”. (You can’t.)</div>
+  </main>
+
+  <section class="modal" id="modal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="big">Yessss! 🥰</div>
+      <p class="sub" id="successText">
+        It’s a date. I knew it was destiny 💞
+      </p>
+      <div class="small-actions">
+        <button class="ghost" id="copyBtn">Copy message</button>
+        <button id="closeBtn">Close</button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // ===========
+    // Customize here (optional)
+    // ===========
+    const GIRLFRIEND_NAME = "CAROLINA DE MOURA SENA"; // <-- change
+    const QUESTION_TEXT = "Will you be my Valentine?";
+    const SUCCESS_TEXT = "It’s a date. See you soon my Valentine x💞";
+    const COPY_MESSAGE = "Yesss! 🥰 Valentine date confirmed 💖";
+
+    // Apply custom text
+    document.getElementById("name").textContent = GIRLFRIEND_NAME;
+    document.getElementById("question").textContent = QUESTION_TEXT;
+    document.getElementById("successText").textContent = SUCCESS_TEXT;
+
+    const noBtn = document.getElementById("noBtn");
+    const btnRow = document.getElementById("btnRow");
+    const yesBtn = document.getElementById("yesBtn");
+    const modal = document.getElementById("modal");
+    const closeBtn = document.getElementById("closeBtn");
+    const copyBtn = document.getElementById("copyBtn");
+
+    // Place "No" initially inside the button row bounds
+    // (so it looks normal until it starts running)
+    let attempts = 0;
+
+    function clamp(n, min, max) {
+      return Math.max(min, Math.min(max, n));
+    }
+
+    function moveNoButton() {
+      attempts++;
+
+      const rowRect = btnRow.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+
+      // Keep it within the row area (so it doesn't fly offscreen)
+      const padding = 6;
+      const maxX = rowRect.width - btnRect.width - padding;
+      const maxY = rowRect.height - btnRect.height - padding;
+
+      // Random positions
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+
+      // Apply
+      noBtn.style.left = clamp(x, padding, maxX) + "px";
+      noBtn.style.top  = clamp(y, padding, maxY) + "px";
+      noBtn.style.transform = "none"; // disable the initial translate
+    }
+
+    // Desktop: runs away on hover
+    noBtn.addEventListener("mouseenter", moveNoButton);
+
+    // Mobile: runs away on touch
+    noBtn.addEventListener("touchstart", (e) => {
+      e.preventDefault(); // prevents accidental click
+      moveNoButton();
+    }, { passive: false });
+
+    // Also run away if someone almost clicks it
+    noBtn.addEventListener("pointerdown", (e) => {
+      e.preventDefault();
+      moveNoButton();
+    });
+
+    // YES click: show modal
+    yesBtn.addEventListener("click", () => {
+      modal.classList.add("show");
+      modal.setAttribute("aria-hidden", "false");
+    });
+
+    // Close modal
+    function closeModal() {
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden", "true");
+    }
+    closeBtn.addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    // Copy a cute message (optional)
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(COPY_MESSAGE);
+        copyBtn.textContent = "Copied ✅";
+        setTimeout(() => (copyBtn.textContent = "Copy message"), 1200);
+      } catch {
+        alert(COPY_MESSAGE);
+      }
+    });
+
+    // Make sure "No" starts in a sensible spot on load
+    window.addEventListener("load", () => {
+      // Put it near the right side at first
+      noBtn.style.left = "60%";
+      noBtn.style.top = "8px";
+      noBtn.style.transform = "none";
+    });
+  </script>
+</body>
+</html>
